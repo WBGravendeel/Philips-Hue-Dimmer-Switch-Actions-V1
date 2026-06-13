@@ -15,13 +15,34 @@ blueprint:
     '
   domain: automation
   input:
-    dimmer:
+    Button_1:
       name: Philips Hue dimmer action
       description: 'Select the action entity for your Hue dimmer'
       selector:
         entity:
           domain: event
-          multiple: true
+          multiple: false
+    Button_2:
+      name: Philips Hue dimmer action
+      description: 'Select the action entity for your Hue dimmer'
+      selector:
+        entity:
+          domain: event
+          multiple: false
+    Button_3:
+      name: Philips Hue dimmer action
+      description: 'Select the action entity for your Hue dimmer'
+      selector:
+        entity:
+          domain: event
+          multiple: false    
+    Button_4:
+      name: Philips Hue dimmer action
+      description: 'Select the action entity for your Hue dimmer'
+      selector:
+        entity:
+          domain: event
+          multiple: false
     light:
       name: Target light
       selector:
@@ -80,7 +101,7 @@ blueprint:
 
 trigger:
   platform: state
-  entity_id: !input dimmer
+  entity_id: !input Button_1
 
 action:
   - variables:
@@ -90,41 +111,25 @@ action:
       negative_step: "{{ -1 * (step | int) }}"
       max_brightness_enabled: "{{ enable_max_brightness | default(true) }}"
   - choose:
-    - conditions: "{{ event_type == 'initial_press' and button == 'on' }}"
+    - conditions: "{{ event_type == 'initial_press' }}"
       sequence:
         - service: light.turn_on
           data:
             entity_id: !input light
-    - conditions: "{{ event_type == 'initial_press' and button == 'off' }}"
+trigger:
+  platform: state
+  entity_id: !input Button_1
+  
+action:
+  - variables:
+      event_type: "{{ trigger.to_state.attributes.event_type }}"
+      button: "{{ trigger.to_state.attributes.button }}"
+      step: !input step
+      negative_step: "{{ -1 * (step | int) }}"
+      max_brightness_enabled: "{{ enable_max_brightness | default(true) }}"
+  - choose:
+    - conditions: "{{ event_type == 'initial_press' }}"
       sequence:
         - service: light.turn_off
           data:
             entity_id: !input light
-    - conditions: "{{ button == 'down' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
-      sequence:
-        - service: light.turn_on
-          data:
-            entity_id: !input light
-            brightness_step_pct: "{{ negative_step }}"
-            transition: !input transition
-    - conditions: "{{ button == 'up' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
-      sequence:
-        - service: light.turn_on
-          data:
-            entity_id: !input light
-            brightness_step_pct: "{{ step }}"
-            transition: !input transition
-    - conditions: "{{ max_brightness_enabled and button == 'on' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
-      sequence:
-        - service: light.turn_on
-          data:
-            entity_id: !input light
-            brightness_pct: !input highest_brightness
-            transition: !input transition
-    - conditions: "{{ button == 'off' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
-      sequence:
-        - service: light.turn_on
-          data:
-            entity_id: !input light
-            brightness_pct: !input lowest_brightness
-            transition: !input transition
