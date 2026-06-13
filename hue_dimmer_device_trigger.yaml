@@ -100,28 +100,28 @@ action:
         - service: light.turn_off
           data:
             entity_id: !input light
-    - conditions: "{{ button == 'down' and (event_type == 'press_release' or event_type == 'hold' or event_type == 'hold_release') }}"
+    - conditions: "{{ button == 'down' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
       sequence:
         - service: light.turn_on
           data:
             entity_id: !input light
             brightness_step_pct: "{{ negative_step }}"
             transition: !input transition
-    - conditions: "{{ button == 'up' and (event_type == 'press_release' or event_type == 'hold' or event_type == 'hold_release') }}"
+    - conditions: "{{ button == 'up' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
       sequence:
         - service: light.turn_on
           data:
             entity_id: !input light
             brightness_step_pct: "{{ step }}"
             transition: !input transition
-    - conditions: "{{ max_brightness_enabled and button == 'on' and (event_type == 'hold' or event_type == 'hold_release') }}"
+    - conditions: "{{ max_brightness_enabled and button == 'on' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
       sequence:
         - service: light.turn_on
           data:
             entity_id: !input light
             brightness_pct: !input highest_brightness
             transition: !input transition
-    - conditions: "{{ button == 'off' and (event_type == 'hold' or event_type == 'hold_release') }}"
+    - conditions: "{{ button == 'off' and (event_type == 'initial_press' or event_type == 'short_release' or event_type == 'long_press') }}"
       sequence:
         - service: light.turn_on
           data:
