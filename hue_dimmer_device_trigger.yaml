@@ -90,12 +90,12 @@ action:
       negative_step: "{{ -1 * (step | int) }}"
       max_brightness_enabled: "{{ enable_max_brightness | default(true) }}"
   - choose:
-    - conditions: "{{ event_type == 'press_release' and button == 'on' }}"
+    - conditions: "{{ event_type == 'initial_press' and button == 'on' }}"
       sequence:
         - service: light.turn_on
           data:
             entity_id: !input light
-    - conditions: "{{ event_type == 'press_release' and button == 'off' }}"
+    - conditions: "{{ event_type == 'initial_press' and button == 'off' }}"
       sequence:
         - service: light.turn_off
           data:
