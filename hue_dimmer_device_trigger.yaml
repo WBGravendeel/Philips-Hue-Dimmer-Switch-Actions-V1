@@ -16,29 +16,29 @@ blueprint:
   domain: automation
   input:
     Button_1:
-      name: Philips Hue dimmer action
-      description: 'Select the action entity for your Hue dimmer'
+      name: Philips Hue V1 on button
+      description: 'Select the on button (button 1)'
       selector:
         entity:
           domain: event
           multiple: false
     Button_2:
-      name: Philips Hue dimmer action
-      description: 'Select the action entity for your Hue dimmer'
+      name: Philips Hue V1 off button
+      description: 'Select the on button (button ?)'
       selector:
         entity:
           domain: event
           multiple: false
     Button_3:
-      name: Philips Hue dimmer action
-      description: 'Select the action entity for your Hue dimmer'
+      name: Philips Hue V1 increase button
+      description: 'Select the on button (button ?)'
       selector:
         entity:
           domain: event
           multiple: false    
     Button_4:
-      name: Philips Hue dimmer action
-      description: 'Select the action entity for your Hue dimmer'
+      name: Philips Hue V1 decrease button
+      description: 'Select the on button (button ?)'
       selector:
         entity:
           domain: event
@@ -118,7 +118,7 @@ action:
             entity_id: !input light
 trigger:
   platform: state
-  entity_id: !input Button_1
+  entity_id: !input Button_2
   
 action:
   - variables:
