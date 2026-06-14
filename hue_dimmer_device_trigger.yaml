@@ -118,7 +118,7 @@ action:
             entity_id: !input light
 trigger:
   platform: state
-  entity_id: !input Button_2
+  entity_id: !input Button_4
   
 action:
   - variables:
